@@ -1,5 +1,5 @@
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "http://172.18.246.151:8000";
 
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
@@ -7,14 +7,25 @@ const sendBtn = document.getElementById("send-btn");
 const clearBtn = document.getElementById("clear-btn");
 const loading = document.getElementById("loading");
 
-// One ID is maintained for this browser conversation.
-let conversationId = crypto.randomUUID();
+// Generate a conversation ID without requiring crypto.randomUUID().
+function generateConversationId() {
+    return (
+        "conv_" +
+        Date.now() +
+        "_" +
+        Math.random().toString(36).slice(2, 10)
+    );
+}
+
+// Maintain one ID for the current browser conversation.
+let conversationId = generateConversationId();
 
 function addMessage(content, sender) {
     const message = document.createElement("div");
+
     message.classList.add("message", sender);
 
-    // Use textContent to safely display API responses.
+    // Safely display text without interpreting HTML.
     message.textContent = content;
 
     chatBox.appendChild(message);
@@ -24,7 +35,9 @@ function addMessage(content, sender) {
 async function sendMessage() {
     const message = userInput.value.trim();
 
-    if (!message) return;
+    if (!message || sendBtn.disabled) {
+        return;
+    }
 
     addMessage(message, "user");
     userInput.value = "";
@@ -47,13 +60,21 @@ async function sendMessage() {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.detail || "Something went wrong");
+            throw new Error(
+                data.detail || "Something went wrong"
+            );
         }
 
         addMessage(data.response, "bot");
 
     } catch (error) {
-        addMessage(`Error: ${error.message}`, "bot");
+        console.error("Chat API error:", error);
+
+        addMessage(
+            `Error: ${error.message}`,
+            "bot"
+        );
+
     } finally {
         loading.classList.add("hidden");
         sendBtn.disabled = false;
@@ -65,14 +86,16 @@ async function clearConversation() {
     try {
         const response = await fetch(
             `${API_URL}/history/${conversationId}`,
-            { method: "DELETE" }
+            {
+                method: "DELETE"
+            }
         );
 
         if (!response.ok) {
             throw new Error("Could not clear conversation");
         }
 
-        conversationId = crypto.randomUUID();
+        conversationId = generateConversationId();
 
         chatBox.replaceChildren();
 
@@ -82,16 +105,24 @@ async function clearConversation() {
         );
 
     } catch (error) {
-        addMessage(`Error: ${error.message}`, "bot");
+        console.error("Clear conversation error:", error);
+
+        addMessage(
+            `Error: ${error.message}`,
+            "bot"
+        );
     }
 }
 
+// Send button event.
 sendBtn.addEventListener("click", sendMessage);
 
+// Enter key event.
 userInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
         sendMessage();
     }
 });
 
+// Clear button event.
 clearBtn.addEventListener("click", clearConversation);
