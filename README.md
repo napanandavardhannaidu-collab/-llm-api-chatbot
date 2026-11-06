@@ -160,6 +160,12 @@ python -m unittest discover -s tests
 
 AI tools were used for development assistance, debugging, and documentation. The project was reviewed and tested by the developer.
 
+## Application Screenshot
+
+The following screenshot shows DevBot successfully responding to a Docker-related question using the Gemini API.
+
+![DevBot Chat Interface](screenshots/DevBot.png)
+
 ## Author
 
 Nandu Vardhan
