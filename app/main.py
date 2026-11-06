@@ -1,4 +1,3 @@
-
 import logging
 
 from fastapi import FastAPI, HTTPException
@@ -9,9 +8,11 @@ from google.genai import errors
 from app.memory import ConversationMemory
 from app.llm_client import generate_response
 
+
 # Logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 # FastAPI application
 app = FastAPI(
@@ -19,6 +20,7 @@ app = FastAPI(
     description="AI DevOps Assistant powered by Google Gemini",
     version="1.0.0"
 )
+
 
 # CORS
 app.add_middleware(
@@ -29,6 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # Conversation memory
 memory = ConversationMemory(max_messages=10)
 
@@ -38,6 +41,7 @@ class ChatRequest(BaseModel):
     message: str = Field(min_length=1, max_length=10000)
 
 
+# Home endpoint
 @app.get("/")
 def home():
     return {
@@ -47,6 +51,7 @@ def home():
     }
 
 
+# Chat endpoint
 @app.post("/chat")
 def chat(request: ChatRequest):
 
@@ -86,24 +91,35 @@ def chat(request: ChatRequest):
 
         logger.exception("Gemini API error")
 
+        # Gemini service temporarily unavailable
+        if exc.code == 503:
+            raise HTTPException(
+                status_code=503,
+                detail="Gemini is currently experiencing high demand. Please try again later."
+            )
+
+        # API quota exceeded
         if exc.code == 429:
             raise HTTPException(
                 status_code=429,
                 detail="Gemini API quota exceeded. Please try again after the quota resets."
             )
 
+        # Authentication errors
         if exc.code in (401, 403):
             raise HTTPException(
                 status_code=502,
                 detail="Gemini API authentication failed. Check your API key."
             )
 
+        # Timeout errors
         if exc.code in (408, 504):
             raise HTTPException(
                 status_code=504,
                 detail="Gemini API request timed out. Please try again."
             )
 
+        # Other Gemini API errors
         raise HTTPException(
             status_code=502,
             detail="Gemini API could not process your request."
@@ -111,6 +127,7 @@ def chat(request: ChatRequest):
 
     except TimeoutError:
         logger.exception("Gemini request timed out")
+
         raise HTTPException(
             status_code=504,
             detail="Request timed out. Please try again."
@@ -118,12 +135,14 @@ def chat(request: ChatRequest):
 
     except Exception:
         logger.exception("Unexpected AI service error")
+
         raise HTTPException(
             status_code=500,
             detail="An unexpected error occurred. Please try again."
         )
 
 
+# Get conversation history
 @app.get("/history/{conversation_id}")
 def get_history(conversation_id: str):
     return {
@@ -132,6 +151,7 @@ def get_history(conversation_id: str):
     }
 
 
+# Delete conversation history
 @app.delete("/history/{conversation_id}")
 def delete_history(conversation_id: str):
     memory.clear_history(conversation_id)
