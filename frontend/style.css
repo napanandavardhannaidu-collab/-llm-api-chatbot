@@ -1,0 +1,148 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #111827;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 750px;
+    height: 85vh;
+    background: #1f2937;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+}
+
+.header {
+    background: #2563eb;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h1 {
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    font-size: 13px;
+    color: #dbeafe;
+}
+
+.status {
+    color: #bbf7d0;
+    font-size: 13px;
+}
+
+.chat-box {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.bot {
+    background: #374151;
+    align-self: flex-start;
+}
+
+.user {
+    background: #2563eb;
+    align-self: flex-end;
+}
+
+.loading {
+    padding: 10px 20px;
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.hidden {
+    display: none;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+    background: #374151;
+}
+
+.input-area input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.clear-btn {
+    background: #dc2626;
+}
+
+.clear-btn:hover {
+    background: #b91c1c;
+}
+
+@media (max-width: 500px) {
+    .app-container {
+        height: 90vh;
+    }
+
+    .input-area {
+        gap: 5px;
+        padding: 10px;
+    }
+
+    button {
+        padding: 10px;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+}

@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBot - AI DevOps Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <header class="header">
+            <div>
+                <h1>🤖 DevBot</h1>
+                <p>Your AI DevOps & Cloud Assistant</p>
+            </div>
+            <span class="status">● Online</span>
+        </header>
+
+        <main id="chat-box" class="chat-box">
+            <div class="message bot">
+                Hello! I'm DevBot. Ask me anything about
+                Linux, Docker, Kubernetes, AWS or CI/CD.
+            </div>
+        </main>
+
+        <div id="loading" class="loading hidden">
+            DevBot is thinking...
+        </div>
+
+        <footer class="input-area">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Ask something about DevOps..."
+                autocomplete="off"
+            >
+            <button id="send-btn">Send</button>
+            <button id="clear-btn" class="clear-btn">Clear</button>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
