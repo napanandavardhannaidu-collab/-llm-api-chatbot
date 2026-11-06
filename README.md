@@ -134,6 +134,40 @@ It retains the latest 10 messages for each conversation and sends the available 
 
 Conversation history is stored in application memory and is cleared when the backend restarts.
 
+## API Availability and Limitations
+
+DevBot uses the Google Gemini API (`gemini-3.8-flash`) to generate AI responses.
+
+### Temporary Service Unavailability (HTTP 503)
+
+The Gemini API may occasionally return `503 Service Unavailable` when the model experiences high demand.
+
+This is a temporary service-side availability issue and does not necessarily indicate a problem with the application code or API key.
+
+#### Error Handling
+
+DevBot handles Gemini API errors, including:
+
+- **503 – Service Unavailable:** The Gemini model is temporarily experiencing high demand.
+- **429 – Too Many Requests:** API quota or rate limit exceeded.
+- **401/403 – Authentication Error:** API authentication or permission issue.
+- **408/504 – Timeout:** The API request timed out.
+- **502 – Bad Gateway:** Other Gemini API processing errors.
+
+#### How to Resolve Temporary 503 Errors
+
+If you encounter a 503 error:
+
+1. Wait for some time.
+2. Try sending your message again.
+3. Check Gemini API quota and service availability if the problem continues.
+
+#### Important Note
+
+Free-tier API access does not guarantee uninterrupted availability. Temporary service interruptions, rate limits, and usage restrictions may apply.
+
+These limitations are related to the external Gemini API service and do not necessarily indicate a defect in DevBot.
+
 ## Error Handling
 
 - Invalid input validation
