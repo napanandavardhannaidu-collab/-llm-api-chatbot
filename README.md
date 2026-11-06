@@ -90,11 +90,11 @@ uvicorn app.main:app --reload
 
 Backend URL:
 
-http://127.0.0.1:8000
+http://172.18.246.151:8000
 
 API documentation:
 
-http://127.0.0.1:8000/docs
+http://172.18.246.151:8000/docs
 
 ### 6. Start the frontend
 
@@ -106,7 +106,7 @@ python -m http.server 5500 --directory frontend
 
 Open:
 
-http://127.0.0.1:5500
+http://172.18.246.151:5500
 
 ## API Endpoints
 
